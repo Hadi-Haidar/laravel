@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthAdminController;
 use App\Http\Controllers\Admin\AdminManager\AdminController;
+use App\Http\Controllers\Admin\Dashboard\DashboardController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -27,6 +28,12 @@ Route::prefix('admin')->group(function () {
                 Route::get('/admins/{id}', 'show');
                 Route::put('/admins/{id}', 'update');
                 Route::delete('/admins/{id}', 'destroy');
+            });
+            
+            // Dashboard routes
+            Route::controller(\App\Http\Controllers\Admin\Dashboard\DashboardController::class)->prefix('dashboard')->group(function () {
+                Route::get('/statistics', 'getStatistics');
+                Route::get('/recent-activity', 'getRecentActivity');
             });
         });
     });
