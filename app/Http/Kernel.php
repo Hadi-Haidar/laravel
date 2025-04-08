@@ -42,5 +42,6 @@ class Kernel extends HttpKernel
     protected $middlewareAliases = [
         // ... existing middleware aliases ...
         'admin.manager' => \App\Http\Middleware\AdminManagerMiddleware::class,
+        'seller.admin' => \App\Http\Middleware\SellerAdminMiddleware::class,
     ];
 } 

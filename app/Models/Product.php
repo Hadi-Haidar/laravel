@@ -16,6 +16,12 @@ class Product extends Model
         'status'
     ];
 
+    // Add this accessor to get the full image URL
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : null;
+    }
+
     public function category(){
         return $this->belongsTo(Category::class);
     }

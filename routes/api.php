@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthAdminController;
 use App\Http\Controllers\Admin\AdminManager\AdminController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
+use App\Http\Controllers\Admin\ProductManagement\ProductController;
+use App\Http\Controllers\Admin\ProductManagement\CategoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,7 +23,7 @@ Route::prefix('admin')->group(function () {
         
         // Admin Manager routes - only accessible to manager role
         Route::prefix('manager')->middleware(\App\Http\Middleware\AdminManagerMiddleware::class)->group(function () {
-            // Import controller at the top of the file for better readability
+            // Admin management routes
             Route::controller(AdminController::class)->group(function () {
                 Route::get('/admins', 'index');
                 Route::post('/admins', 'store');
@@ -34,6 +36,27 @@ Route::prefix('admin')->group(function () {
             Route::controller(\App\Http\Controllers\Admin\Dashboard\DashboardController::class)->prefix('dashboard')->group(function () {
                 Route::get('/statistics', 'getStatistics');
                 Route::get('/recent-activity', 'getRecentActivity');
+            });
+        });
+        
+        // Seller Admin routes - only accessible to seller role
+        Route::prefix('seller')->middleware(\App\Http\Middleware\SellerAdminMiddleware::class)->group(function () {
+            // Product Management routes
+            Route::prefix('products')->controller(\App\Http\Controllers\Admin\ProductManagement\ProductController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+                Route::delete('/{id}', 'destroy');
+            });
+            
+            // Category Management routes
+            Route::prefix('categories')->controller(\App\Http\Controllers\Admin\ProductManagement\CategoryController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+                Route::delete('/{id}', 'destroy');
             });
         });
     });

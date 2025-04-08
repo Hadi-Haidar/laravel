@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Remove the aliasMiddleware line
+        // The line below can be deleted:
+        // $this->app['router']->aliasMiddleware('seller.admin', \App\Http\Middleware\SellerAdminMiddleware::class);
     }
 }
