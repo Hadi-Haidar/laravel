@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminManager\AdminController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\ProductManagement\ProductController;
 use App\Http\Controllers\Admin\ProductManagement\CategoryController;
+use App\Http\Controllers\Admin\OrderManager\OrderController;
+use App\Http\Controllers\Admin\OrderManager\OrderItemController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -52,6 +54,24 @@ Route::prefix('admin')->group(function () {
             
             // Category Management routes
             Route::prefix('categories')->controller(\App\Http\Controllers\Admin\ProductManagement\CategoryController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+                Route::delete('/{id}', 'destroy');
+            });
+            
+            // Order Management routes
+            Route::prefix('orders')->controller(\App\Http\Controllers\Admin\OrderManager\OrderController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::get('/{id}', 'show');
+                Route::put('/{id}/status', 'updateStatus');
+                Route::get('/status/{status}', 'getByStatus');
+                Route::get('/statistics/all', 'getStatistics');
+            });
+
+            // Order Item Management routes
+            Route::prefix('orders/{orderId}/items')->controller(\App\Http\Controllers\Admin\OrderManager\OrderItemController::class)->group(function () {
                 Route::get('/', 'index');
                 Route::post('/', 'store');
                 Route::get('/{id}', 'show');

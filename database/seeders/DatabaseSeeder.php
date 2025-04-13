@@ -22,5 +22,8 @@ class DatabaseSeeder extends Seeder
 
         // Call the AdminSeeder
         $this->call(AdminSeeder::class);
+
+        // The new Order seeder
+        $this->call(OrderSeeder::class);
     }
 }
